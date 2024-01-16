@@ -1,0 +1,14 @@
+{
+    "minVersion": "0.7.5",//"0.8.3",
+    "compatibilityLevel": "JAVA_8",
+    "package": "wonderfulpanic.nochatclosing.mixins",
+    "refmap": "mixins.nochatclosing.refmap.json",
+    "mixins": [
+        "MixinNetHandlerWindow",
+        "MixinGuiChat",
+        "MixinGuiChatAccessor",
+        "MixinGuiContainer"
+    ],
+    "client": [],
+    "server": []
+}

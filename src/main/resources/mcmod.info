@@ -1,0 +1,12 @@
+[
+	{
+		"modid": "nochatclosing",
+		"name": "NoChatClosing",
+		"description": "Prevents chat from being closed by server",
+		"version": "${version}",
+		"mcversion": "${mcversion}",
+		"url": "",
+		"updateUrl": "",
+		"authorList": ["WonderfulPanic"]
+	}
+]
