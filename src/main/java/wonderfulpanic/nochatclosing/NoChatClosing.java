@@ -31,11 +31,12 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import wonderfulpanic.nochatclosing.mixins.MixinGuiChatAccessor;
 
-@Mod(modid="nochatclosing",name="NoChatClosing",version="1.0",
+@Mod(modid="nochatclosing",name="NoChatClosing",version="1.1",
 	clientSideOnly=true,acceptedMinecraftVersions="*",acceptableRemoteVersions="*")
 public class NoChatClosing{
 	private static Supplier<GuiScreen>returnTask;
-	private static boolean closedByPlayer,openedByServer;
+	private static boolean inGuiInput;
+	public static boolean openedByServer;
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event){
 		MinecraftForge.EVENT_BUS.register(this);
@@ -44,16 +45,15 @@ public class NoChatClosing{
 	public void guiOpen(GuiOpenEvent event){
 		if(event.getGui()==null){
 			openedByServer=false;
-			if(closedByPlayer){
-				closedByPlayer=false;
+			if(inGuiInput)
 				return;
-			}
-			if(returnTask!=null){
+			if(returnTask==null)
+				preserveWindow();
+			else{
 				event.setGui(returnTask.get());
 				returnTask=null;
-			}else
-				preserveWindow();
-		}else
+			}
+		}else if(!inGuiInput)
 			preserveWindow();
 	}
 	public static void preserveWindow(){
@@ -66,13 +66,9 @@ public class NoChatClosing{
 		}else if(screen instanceof GuiInventory)
 			returnTask=()->new GuiInventory(minecraft.player);
 	}
-	public static void closedByPlayer(){
-		closedByPlayer=true;
-	}
-	public static boolean isWindowOpenedByServer(){
-		return openedByServer;
-	}
-	public static void openedByServer(){
-		openedByServer=true;
+	public static void wrapPlayerInput(Runnable run){
+		inGuiInput=true;
+		run.run();
+		inGuiInput=false;
 	}
 }

@@ -22,6 +22,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.inventory.GuiInventory;
 import wonderfulpanic.nochatclosing.NoChatClosing;
 
 @Mixin(GuiContainer.class)
@@ -31,7 +32,9 @@ public abstract class MixinGuiContainer{
 		target="Lnet/minecraft/client/entity/EntityPlayerSP;closeScreen()V"),
 		method="keyTyped")
 	public void closeScreen(EntityPlayerSP player){
-		NoChatClosing.closedByPlayer();
-		player.closeScreen();
+		if((Object)this instanceof GuiInventory)
+			NoChatClosing.wrapPlayerInput(player::closeScreen);
+		else
+			player.closeScreen();
 	}
 }

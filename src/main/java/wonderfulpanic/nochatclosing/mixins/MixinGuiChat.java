@@ -33,7 +33,8 @@ public abstract class MixinGuiChat{
 		method="keyTyped")
 	public void closeChat(Minecraft minecraft,GuiScreen gui){
 		if(gui==null)
-			NoChatClosing.closedByPlayer();
-		minecraft.displayGuiScreen(gui);//not null in case if some modification want to open another gui
+			NoChatClosing.wrapPlayerInput(()->minecraft.displayGuiScreen(null));
+		else//in case if some modification want to open another gui
+			minecraft.displayGuiScreen(gui);
 	}
 }

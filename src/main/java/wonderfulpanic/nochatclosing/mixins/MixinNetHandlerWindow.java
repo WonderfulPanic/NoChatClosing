@@ -35,17 +35,18 @@ public abstract class MixinNetHandlerWindow implements INetHandlerPlayClient{
 	@Shadow
 	private Minecraft gameController;
 	@Inject(at=@At("TAIL"),
-		method="handleOpenWindow(Lnet/minecraft/network/play/server/SPacketOpenWindow;)V",
-		cancellable=true)
+		method="handleOpenWindow(Lnet/minecraft/network/play/server/SPacketOpenWindow;)V")
 	public void injectOpenWindow(SPacketOpenWindow packet,CallbackInfo info){
-		NoChatClosing.openedByServer();
+		NoChatClosing.openedByServer=true;
 	}
 	@Inject(at=@At("HEAD"),
 		method="handleCloseWindow(Lnet/minecraft/network/play/server/SPacketCloseWindow;)V",
 		cancellable=true)
 	public void injectCloseWindow(SPacketCloseWindow packet,CallbackInfo info){
 		PacketThreadUtil.checkThreadAndEnqueue(packet,this,gameController);
-		if(!NoChatClosing.isWindowOpenedByServer())
+		if(NoChatClosing.openedByServer)
+			NoChatClosing.openedByServer=false;
+		else
 			info.cancel();
 	}
 }
