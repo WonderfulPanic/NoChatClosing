@@ -4,10 +4,9 @@
     "package": "wonderfulpanic.nochatclosing.mixins",
     "refmap": "mixins.nochatclosing.refmap.json",
     "mixins": [
-        "MixinGuiChatAccessor",
+    	"MixinGuiChatAccessor",
         "MixinNetHandlerWindow",
-        "MixinGuiChat",
-        "MixinGuiContainer"
+        "MixinGuiChat"
     ],
     "client": [],
     "server": []

@@ -23,6 +23,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGameOver;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.network.PacketThreadUtil;
 import net.minecraft.network.play.INetHandlerPlayClient;
@@ -46,7 +47,7 @@ public abstract class MixinNetHandlerWindow implements INetHandlerPlayClient{
 		PacketThreadUtil.checkThreadAndEnqueue(packet,this,gameController);
 		if(NoChatClosing.openedByServer)
 			NoChatClosing.openedByServer=false;
-		else
+		else if(!(gameController.currentScreen instanceof GuiGameOver))
 			info.cancel();
 	}
 }

@@ -31,10 +31,7 @@ public abstract class MixinGuiChat{
 		value="INVOKE",
 		target="Lnet/minecraft/client/Minecraft;displayGuiScreen(Lnet/minecraft/client/gui/GuiScreen;)V"),
 		method="keyTyped")
-	public void closeChat(Minecraft minecraft,GuiScreen gui){
-		if(gui==null)
-			NoChatClosing.wrapPlayerInput(()->minecraft.displayGuiScreen(null));
-		else//in case if some modification want to open another gui
-			minecraft.displayGuiScreen(gui);
+	public void wrapKeyTyped(Minecraft minecraft,GuiScreen gui){
+		NoChatClosing.wrapPlayerInput(()->minecraft.displayGuiScreen(gui));
 	}
 }

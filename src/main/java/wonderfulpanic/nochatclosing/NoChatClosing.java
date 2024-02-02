@@ -22,7 +22,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
-import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -43,17 +42,19 @@ public class NoChatClosing{
 	}
 	@SubscribeEvent
 	public void guiOpen(GuiOpenEvent event){
-		if(event.getGui()==null){
+		boolean close=event.getGui()==null;
+		if(close)
 			openedByServer=false;
-			if(inGuiInput)
-				return;
+		if(inGuiInput)
+			return;
+		if(close){
 			if(returnTask==null)
 				preserveWindow();
 			else{
 				event.setGui(returnTask.get());
 				returnTask=null;
 			}
-		}else if(!inGuiInput)
+		}else
 			preserveWindow();
 	}
 	public static void preserveWindow(){
@@ -63,8 +64,7 @@ public class NoChatClosing{
 			GuiTextField field=((MixinGuiChatAccessor)screen).getInputField();
 			String msg=(field==null)?"":field.getText();
 			returnTask=()->new GuiChat(msg);
-		}else if(screen instanceof GuiInventory)
-			returnTask=()->new GuiInventory(minecraft.player);
+		}
 	}
 	public static void wrapPlayerInput(Runnable run){
 		inGuiInput=true;
