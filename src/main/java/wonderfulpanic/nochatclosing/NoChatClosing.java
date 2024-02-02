@@ -30,7 +30,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import wonderfulpanic.nochatclosing.mixins.MixinGuiChatAccessor;
 
-@Mod(modid="nochatclosing",name="NoChatClosing",version="1.1",
+@Mod(modid="nochatclosing",name="NoChatClosing",version="1.2",
 	clientSideOnly=true,acceptedMinecraftVersions="*",acceptableRemoteVersions="*")
 public class NoChatClosing{
 	private static Supplier<GuiScreen>returnTask;
